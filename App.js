@@ -10,8 +10,6 @@ import Login from './src/screens/Login';
 export default class App extends React.Component {
 	constructor(props) {
 		super(props);
-		console.log('app provider', AppProvider);
-		console.log('app stack navigator', AppStackNavigator);
 	}
 
 	render() {
