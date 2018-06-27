@@ -3,7 +3,8 @@ import config from '../../config';
 
 // INITIAL STATE
 const initialState = {
-	testValue: 'THIS IS THE TEST VALUE FROM CONTEXT'
+	testValue: 'THIS IS THE TEST VALUE FROM CONTEXT',
+	user: null
 };
 
 export const AppContext = React.createContext();
@@ -24,11 +25,15 @@ export class AppProvider extends React.Component {
 					'Content-Type': 'application/json'
 				},
 				body: JSON.stringify({
-					obj
+					userName: obj.userName,
+					email: obj.email,
+					password: obj.password
 				})
 			});
 			let responseJson = await response.json();
-			console.log('response from signup', responseJson);
+			this.setState({
+				user: responseJson
+			});
 			return responseJson;
 		} catch (error) {
 			console.error(error);
@@ -40,7 +45,8 @@ export class AppProvider extends React.Component {
 			<AppContext.Provider
 				value={{
 					testValue: this.state.testValue,
-					signup: this.signup
+					signup: this.signup,
+					user: this.state.user
 				}}
 			>
 				{this.props.children}

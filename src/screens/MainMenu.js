@@ -11,10 +11,13 @@ export default class Login extends React.Component {
 			<AppConsumer>
 				{context => (
 					<View style={styles.container}>
-						<Text>This is login!</Text>
+						<Text>MAIN MENU</Text>
 						<Text>{context.testValue}</Text>
-						<TouchableHighlight onPress={() => this.props.navigation.navigate('Signup')}>
-							<Text>Go to SIGNUP</Text>
+						<TouchableHighlight onPress={() => Navigation.navigate('StartGame')}>
+							<Text>Start Game</Text>
+						</TouchableHighlight>
+						<TouchableHighlight onPress={() => Navigation.navigate('NewBoard')}>
+							<Text>Create a Board</Text>
 						</TouchableHighlight>
 
 					</View>
@@ -29,6 +32,6 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: '#fff',
 		alignItems: 'center',
-		justifyContent: 'center'
+		justifyContent: 'space-around'
 	}
 });

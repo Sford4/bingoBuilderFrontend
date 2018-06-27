@@ -5,16 +5,22 @@ import Navigation from '../navigation/Navigation';
 
 // COMPONENT IMPORTS
 
-export default class Login extends React.Component {
+export default class Preview extends React.Component {
 	render() {
 		return (
 			<AppConsumer>
 				{context => (
 					<View style={styles.container}>
-						<Text>This is login!</Text>
+						<View style={styles.header}>
+							<Image
+								style={{ width: 100, height: 50 }}
+								source={require('../../assets/bingoBuilderLogo.png')}
+							/>
+							<Text>This is TITLE for the PREVIEW!</Text>
+						</View>
 						<Text>{context.testValue}</Text>
-						<TouchableHighlight onPress={() => this.props.navigation.navigate('Signup')}>
-							<Text>Go to SIGNUP</Text>
+						<TouchableHighlight onPress={() => this.props.navigation.navigate('MainMenu')}>
+							<Text>Go to HOME</Text>
 						</TouchableHighlight>
 
 					</View>
@@ -30,5 +36,11 @@ const styles = StyleSheet.create({
 		backgroundColor: '#fff',
 		alignItems: 'center',
 		justifyContent: 'center'
+	},
+	header: {
+		display: 'flex',
+		flexDirection: 'row',
+		justifyContent: 'space-around',
+		alignSelf: 'flex-start'
 	}
 });

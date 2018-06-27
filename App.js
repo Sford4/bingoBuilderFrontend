@@ -4,8 +4,11 @@ import { createStackNavigator } from 'react-navigation';
 
 // COMPONENT IMPORTS
 import { AppProvider } from './src/context/context';
+import Navigation from './src/navigation/Navigation';
 import Signup from './src/screens/Signup';
 import Login from './src/screens/Login';
+import MainMenu from './src/screens/MainMenu';
+import NewBoardPage from './src/screens/NewBoard/NewBoardPage';
 
 export default class App extends React.Component {
 	constructor(props) {
@@ -15,7 +18,11 @@ export default class App extends React.Component {
 	render() {
 		return (
 			<AppProvider>
-				<AppStackNavigator />
+				<AppStackNavigator
+					ref={navigatorRef => {
+						Navigation.setTopLevelNavigator(navigatorRef);
+					}}
+				/>
 			</AppProvider>
 		);
 	}
@@ -23,7 +30,9 @@ export default class App extends React.Component {
 
 const AppStackNavigator = createStackNavigator({
 	Signup: Signup,
-	Login: Login
+	Login: Login,
+	MainMenu: MainMenu,
+	NewBoard: NewBoardPage
 });
 
 const styles = StyleSheet.create({
