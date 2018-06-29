@@ -58,6 +58,7 @@ export default class NewBoardPage extends React.Component {
 									goToTitlePage={this.goToTitlePage}
 									saveSquares={this.saveSquares}
 									squares={this.state.squares}
+									title={this.state.title}
 								/>}
 					</View>
 				)}

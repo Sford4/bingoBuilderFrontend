@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, TouchableHighlight, TextInput, Image } from 're
 import { AppConsumer } from '../context/context';
 import Navigation from '../navigation/Navigation';
 import AwesomeAlert from 'react-native-awesome-alerts';
+import masterStyles from '../styles/masterStyles';
 
 // COMPONENT IMPORTS
 
@@ -44,40 +45,40 @@ class Signup extends React.Component {
 	render() {
 		return (
 			<View style={styles.container}>
-				<Image style={{ width: 100, height: 50 }} source={require('../../assets/bingoBuilderLogo.png')} />
+				<Image style={{ width: 150, height: 75 }} source={require('../../assets/bingoBuilderLogo.png')} />
 				<TextInput
-					style={styles.input}
+					style={masterStyles.input}
 					placeholder="Username"
 					onChangeText={text => this.setState({ userName: text })}
 					value={this.state.userName}
 				/>
 				<TextInput
-					style={styles.input}
+					style={masterStyles.input}
 					placeholder="Email"
 					onChangeText={text => this.setState({ email: text })}
 					value={this.state.email}
 					keyboardType="email-address"
 				/>
 				<TextInput
-					style={styles.input}
+					style={masterStyles.input}
 					placeholder="Password"
 					onChangeText={text => this.setState({ password: text })}
 					value={this.state.password}
 					secureTextEntry={true}
 				/>
 				<TextInput
-					style={styles.input}
+					style={masterStyles.input}
 					placeholder="Confirm Password"
 					onChangeText={text => this.setState({ passwordConfirm: text })}
 					value={this.state.passwordConfirm}
 					secureTextEntry={true}
 				/>
-				<TouchableHighlight style={styles.button} onPress={() => Navigation.navigate('MainMenu')}>
+				<TouchableHighlight style={masterStyles.button} onPress={() => Navigation.navigate('MainMenu')}>
 					{/* <TouchableHighlight style={styles.button} onPress={() => this.props.signup(this.state)}> */}
-					<Text>SIGNUP</Text>
+					<Text style={masterStyles.btnText}>SIGNUP</Text>
 				</TouchableHighlight>
 				<TouchableHighlight onPress={() => Navigation.navigate('Login')}>
-					<Text>Have an account? Click here!</Text>
+					<Text style={{ color: '#004AFF' }}>Have an account? Click here!</Text>
 				</TouchableHighlight>
 
 				<AwesomeAlert
@@ -112,26 +113,5 @@ const styles = StyleSheet.create({
 		backgroundColor: '#fff',
 		alignItems: 'center',
 		justifyContent: 'space-around'
-	},
-	button: {
-		width: 260,
-		height: 45,
-		display: 'flex',
-		alignItems: 'center',
-		justifyContent: 'center',
-		borderRadius: 40,
-		backgroundColor: 'red',
-		shadowRadius: 2,
-		shadowColor: 'gray',
-		shadowOpacity: 0.3
-	},
-	input: {
-		width: 260,
-		height: 45,
-		padding: 15,
-		borderRadius: 18,
-		borderWidth: 1,
-		borderColor: 'gray',
-		borderStyle: 'solid'
 	}
 });

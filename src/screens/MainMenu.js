@@ -1,7 +1,8 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableHighlight } from 'react-native';
+import { StyleSheet, Text, View, TouchableHighlight, Image } from 'react-native';
 import { AppConsumer } from '../context/context';
 import Navigation from '../navigation/Navigation';
+import masterStyles from '../styles/masterStyles';
 
 // COMPONENT IMPORTS
 
@@ -11,13 +12,22 @@ export default class Login extends React.Component {
 			<AppConsumer>
 				{context => (
 					<View style={styles.container}>
-						<Text>MAIN MENU</Text>
-						<Text>{context.testValue}</Text>
-						<TouchableHighlight onPress={() => Navigation.navigate('StartGame')}>
-							<Text>Start Game</Text>
+						<Image
+							style={{ width: 150, height: 75 }}
+							source={require('../../assets/bingoBuilderLogo.png')}
+						/>
+						<Text style={masterStyles.title}>Menu</Text>
+						<TouchableHighlight
+							style={masterStyles.button}
+							onPress={() => Navigation.navigate('StartGame')}
+						>
+							<Text style={masterStyles.btnText}>Start Game</Text>
 						</TouchableHighlight>
-						<TouchableHighlight onPress={() => Navigation.navigate('NewBoard')}>
-							<Text>Create a Board</Text>
+						<TouchableHighlight style={masterStyles.button} onPress={() => Navigation.navigate('Join')}>
+							<Text style={masterStyles.btnText}>Join a Game</Text>
+						</TouchableHighlight>
+						<TouchableHighlight style={masterStyles.button} onPress={() => Navigation.navigate('NewBoard')}>
+							<Text style={masterStyles.btnText}>Create a Board</Text>
 						</TouchableHighlight>
 
 					</View>

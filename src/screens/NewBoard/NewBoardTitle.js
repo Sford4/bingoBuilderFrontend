@@ -1,7 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableHighlight, Image, TextInput } from 'react-native';
+import { StyleSheet, Text, View, TouchableHighlight, Image, TextInput, Alert } from 'react-native';
 import { AppConsumer } from '../../context/context';
-import Navigation from '../../navigation/Navigation';
+import masterStyles from '../../styles/masterStyles';
 
 // COMPONENT IMPORTS
 
@@ -36,9 +36,12 @@ export default class NewBoardTitle extends React.Component {
 	displayKeywords = keywords => {
 		let keywordsDisplayed = keywords.map((word, index) => {
 			return (
-				<View style={styles.row} key={index}>
-					<Text>{word}</Text>
-					<TouchableHighlight onPress={() => this.removeKeyword(word)}><Text>-</Text></TouchableHighlight>
+				<View style={[styles.row, styles.keywordsDisplayed]} key={index}>
+					<TouchableHighlight onPress={() => this.removeKeyword(word)}>
+						<Text style={{ fontSize: 15, color: 'white' }}> x</Text>
+					</TouchableHighlight>
+					<Text style={{ color: 'white' }}>{word}</Text>
+
 				</View>
 			);
 		});
@@ -46,6 +49,10 @@ export default class NewBoardTitle extends React.Component {
 	};
 
 	goToNewSquare = () => {
+		// if (!this.state.title || !this.state.keywords.length) {
+		// 	Alert.alert('Woah there!', 'You must have a title and at least one keyword!', { cancelable: false });
+		// 	return;
+		// }
 		this.props.saveTitleAndKeywords(this.state.title, this.state.keywords);
 		this.props.goToNewSquare();
 	};
@@ -57,43 +64,44 @@ export default class NewBoardTitle extends React.Component {
 					<View style={styles.container}>
 						<View style={styles.header}>
 							<Image
-								style={{ width: 100, height: 50 }}
+								style={{ width: 140, height: 70, marginHorizontal: 10 }}
 								source={require('../../../assets/bingoBuilderLogo.png')}
 							/>
-							<Text>This is TITLE for the NEW BOARD!</Text>
+							<Text style={[masterStyles.title, { width: '45%', textAlign: 'center' }]}>NEW BOARD</Text>
 						</View>
-
-						<Text>Board Title</Text>
-						<TextInput
-							style={styles.input}
-							placeholder="e.g. Tinder"
-							onChangeText={text => this.setState({ title: text })}
-							value={this.state.title}
-							maxLength={30}
-						/>
-						<Text>Keywords (Limit 5)</Text>
-						<View style={styles.row}>
+						<View style={styles.mainContainer}>
+							<Text style={masterStyles.subtitle}>Board Title</Text>
 							<TextInput
-								style={styles.input}
-								placeholder="e.g. Dating"
-								onChangeText={text => this.setState({ keyword: text })}
-								value={this.state.keyword}
-								maxLength={20}
+								style={masterStyles.input}
+								placeholder="e.g. Tinder"
+								onChangeText={text => this.setState({ title: text })}
+								value={this.state.title}
+								maxLength={30}
 							/>
-							<TouchableHighlight
-								onPress={() => this.addKeyword(this.state.keyword)}
-								style={styles.addBtn}
-							>
-								<Text>+</Text>
-							</TouchableHighlight>
+							<Text style={masterStyles.subtitle}>Keywords (Limit 5)</Text>
+							<View style={styles.row}>
+								<TextInput
+									style={masterStyles.input}
+									placeholder="e.g. Dating"
+									onChangeText={text => this.setState({ keyword: text })}
+									value={this.state.keyword}
+									maxLength={20}
+								/>
+								<TouchableHighlight
+									onPress={() => this.addKeyword(this.state.keyword)}
+									style={styles.addBtn}
+								>
+									<Text style={styles.plusSign}>+</Text>
+								</TouchableHighlight>
+							</View>
+							<View style={styles.row}>
+								{this.displayKeywords(this.state.keywords)}
+							</View>
 						</View>
-						<View style={styles.row}>
-							{this.displayKeywords(this.state.keywords)}
-						</View>
-						<TouchableHighlight onPress={() => this.goToNewSquare()}>
-							<Text>Next &gt;</Text>
+						<TouchableHighlight style={masterStyles.button} onPress={() => this.goToNewSquare()}>
+							<Text style={masterStyles.btnText}>Next &gt;</Text>
 						</TouchableHighlight>
-						<TouchableHighlight onPress={() => this.props.navigation.navigate('MainMenu')}>
+						<TouchableHighlight onPress={() => Navigation.navigate('MainMenu')}>
 							<Text>Go to HOME</Text>
 						</TouchableHighlight>
 
@@ -111,17 +119,35 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'space-between'
 	},
+	mainContainer: {
+		height: '50%',
+		display: 'flex',
+		justifyContent: 'space-around'
+	},
 	header: {
 		display: 'flex',
 		flexDirection: 'row',
 		justifyContent: 'space-around',
-		alignSelf: 'flex-start'
+		alignSelf: 'flex-start',
+		marginTop: 15,
+		justifyContent: 'center',
+		alignItems: 'center',
+		paddingHorizontal: 10
 	},
 	row: {
 		display: 'flex',
-		flexDirection: 'row'
+		flexDirection: 'row',
+		alignItems: 'center'
+		// justifyContent: 'center'
 	},
 	addBtn: {
 		marginLeft: 10
+	},
+	plusSign: {
+		color: '#00AC9F',
+		fontSize: 40
+	},
+	keywordsDisplayed: {
+		backgroundColor: '#BFBFBF'
 	}
 });
