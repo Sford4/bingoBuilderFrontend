@@ -17,10 +17,7 @@ export default class Login extends React.Component {
 							source={require('../../assets/bingoBuilderLogo.png')}
 						/>
 						<Text style={masterStyles.title}>Menu</Text>
-						<TouchableHighlight
-							style={masterStyles.button}
-							onPress={() => Navigation.navigate('StartGame')}
-						>
+						<TouchableHighlight style={masterStyles.button} onPress={() => Navigation.navigate('Search')}>
 							<Text style={masterStyles.btnText}>Start Game</Text>
 						</TouchableHighlight>
 						<TouchableHighlight style={masterStyles.button} onPress={() => Navigation.navigate('Join')}>
@@ -28,6 +25,9 @@ export default class Login extends React.Component {
 						</TouchableHighlight>
 						<TouchableHighlight style={masterStyles.button} onPress={() => Navigation.navigate('NewBoard')}>
 							<Text style={masterStyles.btnText}>Create a Board</Text>
+						</TouchableHighlight>
+						<TouchableHighlight style={masterStyles.button} onPress={() => Navigation.navigate('Options')}>
+							<Text style={masterStyles.btnText}>More</Text>
 						</TouchableHighlight>
 
 					</View>

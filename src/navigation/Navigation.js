@@ -15,9 +15,15 @@ function navigate(routeName, params) {
 	);
 }
 
+getCurrentRoute = () => {
+	// console.log('current nav state', _navigator.state);
+	return _navigator.state;
+};
+
 // add other navigation functions that you need and export them
 
 export default {
 	navigate,
-	setTopLevelNavigator
+	setTopLevelNavigator,
+	getCurrentRoute
 };

@@ -5,18 +5,47 @@ import Navigation from '../../navigation/Navigation';
 import masterStyles from '../../styles/masterStyles';
 
 // COMPONENT IMPORTS
+import Header from '../../screens/components/header';
 
 export default class NewSquare extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			currSquare: 0,
-			currText: null,
+			currSquare: this.props.squares ? this.props.squares.length - 1 : 0,
+			currText: this.props.squares ? this.props.squares[this.props.squares.length - 1] : null,
 			squares: this.props.squares ? this.props.squares : []
 		};
+		this.btns = this.determineBtns(this.state.currSquare);
 	}
 
+	componentWillUpdate(NextProps, NextState) {
+		console.log('the currSquare', NextState.currSquare);
+		this.btns = this.determineBtns(NextState.currSquare);
+	}
+
+	determineBtns = squareNum => {
+		if (squareNum === 23) {
+			return (
+				<View style={styles.btnView}>
+					<TouchableHighlight style={styles.smallBackBtn} onPress={() => this.goBack(this.state.squares)}>
+						<Text style={masterStyles.btnText}>Back</Text>
+					</TouchableHighlight>
+					<TouchableHighlight style={styles.previewBtn} onPress={() => this.goBack(this.state.squares)}>
+						<Text style={masterStyles.btnText}>Preview!</Text>
+					</TouchableHighlight>
+				</View>
+			);
+		} else {
+			return (
+				<TouchableHighlight style={masterStyles.button} onPress={() => this.goBack(this.state.squares)}>
+					<Text style={masterStyles.btnText}>Back</Text>
+				</TouchableHighlight>
+			);
+		}
+	};
+
 	backArrow = (num, squares) => {
+		console.log('going back cuz', this.state.currSquare);
 		if (this.state.currSquare === 0) {
 			this.props.saveSquares(squares);
 			this.props.goToTitlePage();
@@ -29,26 +58,36 @@ export default class NewSquare extends React.Component {
 	};
 
 	goForward = (num, squares, context) => {
-		// if (num === 23) {
-		// NEED TO ADD USERNAME TO THIS
-		// context.setBoardForPreview({
-		// 	title: this.props.title,
-		// 	squares: squares,
-		// 	keywords: this.props.keywords,
-		// 	creator: context.user.userName || 'THE CREATOR'
-		// });
-		// 	this.props.navigation.navigate('Preview');
-		// } else if (this.state.currText !== null) {
-		// 	squares.push(this.state.currText);
-		// 	this.setState({
-		// 		currSquare: num + 1,
-		// 		currText: squares[num + 1] ? squares[num + 1] : null,
-		// 		squares: squares
-		// 	});
-		// } else {
-		// 	Alert.alert('Woah there!', "You can't leave a square empty!", { cancelable: false });
-		// }
-		Navigation.navigate('Preview');
+		if (num === 23) {
+			context.setBoard({
+				title: this.props.title,
+				squares: squares,
+				keywords: this.props.keywords,
+				creator: context.user.userName || 'THE CREATOR'
+			});
+			context.saveBoardOnUser(
+				{
+					title: this.props.title,
+					squares: squares,
+					keywords: this.props.keywords,
+					creator: context.user.userName
+				},
+				context.user._id
+			);
+			Navigation.navigate('Preview');
+		} else if (!this.props.squares.includes(this.state.currText) && squares.includes(this.state.currText)) {
+			Alert.alert('Hold on...', "You can't have two squares say the same thing!", { cancelable: false });
+		} else if (this.state.currText !== null && !this.props.squares.includes(this.state.currText)) {
+			squares.push(this.state.currText);
+			this.setState({
+				currSquare: num + 1,
+				currText: squares[num + 1] ? squares[num + 1] : null,
+				squares: squares
+			});
+		} else {
+			Alert.alert('Woah there!', "You can't leave a square empty!", { cancelable: false });
+		}
+		// Navigation.navigate('Preview');
 	};
 
 	goBack = squares => {
@@ -61,15 +100,7 @@ export default class NewSquare extends React.Component {
 			<AppConsumer>
 				{context => (
 					<View style={styles.container}>
-						<View style={masterStyles.header}>
-							<Image
-								style={{ width: 140, height: 70, marginHorizontal: 10 }}
-								source={require('../../../assets/bingoBuilderLogo.png')}
-							/>
-							<Text style={[masterStyles.title, { width: '45%', textAlign: 'center' }]}>
-								{this.props.title || 'NO TITLE'}
-							</Text>
-						</View>
+						<Header title={this.props.title || 'NO TITLE'} onLogoPress={this.props.saveUponExit} />
 						<View style={styles.mainContainer}>
 							<Text style={masterStyles.subtitle}>Make your squares</Text>
 							<Text style={{ color: '#BFBFBF', fontSize: 18 }}>
@@ -96,9 +127,7 @@ export default class NewSquare extends React.Component {
 								</TouchableHighlight>
 							</View>
 						</View>
-						<TouchableHighlight style={masterStyles.button} onPress={() => this.goBack(this.state.squares)}>
-							<Text style={masterStyles.btnText}>Back</Text>
-						</TouchableHighlight>
+						{this.btns}
 
 					</View>
 				)}
@@ -141,5 +170,39 @@ const styles = StyleSheet.create({
 		padding: 18,
 		fontSize: 26,
 		textAlign: 'center'
+	},
+	btnView: {
+		display: 'flex',
+		flexDirection: 'row',
+		justifyContent: 'space-around',
+		alignItems: 'center'
+	},
+	smallBackBtn: {
+		width: '40%',
+		minWidth: 110,
+		maxWidth: 150,
+		height: 40,
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'center',
+		borderRadius: 40,
+		backgroundColor: '#00a99d',
+		shadowRadius: 2,
+		shadowColor: 'gray',
+		shadowOpacity: 0.3
+	},
+	previewBtn: {
+		width: '40%',
+		minWidth: 110,
+		maxWidth: 150,
+		height: 40,
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'center',
+		borderRadius: 40,
+		backgroundColor: '#0054ff',
+		shadowRadius: 2,
+		shadowColor: 'gray',
+		shadowOpacity: 0.3
 	}
 });

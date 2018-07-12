@@ -15,7 +15,8 @@ class Signup extends React.Component {
 			email: '',
 			password: '',
 			passwordConfirm: '',
-			showAlert: false
+			showAlert: false,
+			loading: this.props.user === 'none' ? false : true
 		};
 		console.log('props from context', this.props);
 	}
@@ -32,17 +33,34 @@ class Signup extends React.Component {
 		});
 	};
 
+	componentDidMount() {
+		if (!this.props.user) {
+			this.props.retrieveUserData();
+		}
+	}
+
 	componentWillUpdate(Nextprops, Nextstate) {
 		console.log('New user props', Nextprops);
 		if (Nextprops.user && Nextprops.user.error) {
 			this.showAlert();
-		}
-		if (Nextprops.user && !Nextprops.user.error) {
+		} else if (Nextprops.user === 'none' && Nextstate.loading) {
+			this.setState({
+				loading: false
+			});
+		} else if (Nextprops.user !== 'none' && Nextprops.user && !Nextprops.user.error) {
+			console.log('GOING HOME!!!');
 			Navigation.navigate('MainMenu');
 		}
 	}
 
 	render() {
+		if (this.state.loading) {
+			return (
+				<View style={styles.container}>
+					<Text>LOADING!!!!</Text>
+				</View>
+			);
+		}
 		return (
 			<View style={styles.container}>
 				<Image style={{ width: 150, height: 75 }} source={require('../../assets/bingoBuilderLogo.png')} />
@@ -73,8 +91,8 @@ class Signup extends React.Component {
 					value={this.state.passwordConfirm}
 					secureTextEntry={true}
 				/>
-				<TouchableHighlight style={masterStyles.button} onPress={() => Navigation.navigate('MainMenu')}>
-					{/* <TouchableHighlight style={styles.button} onPress={() => this.props.signup(this.state)}> */}
+				{/* <TouchableHighlight style={masterStyles.button} onPress={() => Navigation.navigate('MainMenu')}> */}
+				<TouchableHighlight style={masterStyles.button} onPress={() => this.props.signup(this.state)}>
 					<Text style={masterStyles.btnText}>SIGNUP</Text>
 				</TouchableHighlight>
 				<TouchableHighlight onPress={() => Navigation.navigate('Login')}>

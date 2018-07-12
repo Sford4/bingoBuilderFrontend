@@ -4,8 +4,9 @@ import { AppConsumer } from '../../context/context';
 import masterStyles from '../../styles/masterStyles';
 
 // COMPONENT IMPORTS
+import Header from '../../screens/components/header';
 
-export default class NewBoardTitle extends React.Component {
+export default class NewBoardTitle extends React.PureComponent {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -49,26 +50,22 @@ export default class NewBoardTitle extends React.Component {
 	};
 
 	goToNewSquare = () => {
-		// if (!this.state.title || !this.state.keywords.length) {
-		// 	Alert.alert('Woah there!', 'You must have a title and at least one keyword!', { cancelable: false });
-		// 	return;
-		// }
+		if (!this.state.title || !this.state.keywords.length) {
+			Alert.alert('Woah there!', 'You must have a title and at least one keyword!', { cancelable: false });
+			return;
+		}
 		this.props.saveTitleAndKeywords(this.state.title, this.state.keywords);
 		this.props.goToNewSquare();
 	};
+
+	componentWillReceiveProps;
 
 	render() {
 		return (
 			<AppConsumer>
 				{context => (
 					<View style={styles.container}>
-						<View style={styles.header}>
-							<Image
-								style={{ width: 140, height: 70, marginHorizontal: 10 }}
-								source={require('../../../assets/bingoBuilderLogo.png')}
-							/>
-							<Text style={[masterStyles.title, { width: '45%', textAlign: 'center' }]}>NEW BOARD</Text>
-						</View>
+						<Header title="New Board" onLogoPress={this.props.saveUponExit} />
 						<View style={styles.mainContainer}>
 							<Text style={masterStyles.subtitle}>Board Title</Text>
 							<TextInput
@@ -100,9 +97,6 @@ export default class NewBoardTitle extends React.Component {
 						</View>
 						<TouchableHighlight style={masterStyles.button} onPress={() => this.goToNewSquare()}>
 							<Text style={masterStyles.btnText}>Next &gt;</Text>
-						</TouchableHighlight>
-						<TouchableHighlight onPress={() => Navigation.navigate('MainMenu')}>
-							<Text>Go to HOME</Text>
 						</TouchableHighlight>
 
 					</View>

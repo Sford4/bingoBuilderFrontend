@@ -11,6 +11,10 @@ import MainMenu from './src/screens/MainMenu';
 import NewBoardPage from './src/screens/NewBoard/NewBoardPage';
 import Preview from './src/screens/Preview';
 import Join from './src/screens/Join';
+import Options from './src/screens/Options';
+import SearchBoards from './src/screens/SearchBoards';
+import Pregame from './src/screens/Pregame';
+import Game from './src/screens/Game';
 
 export default class App extends React.Component {
 	constructor(props) {
@@ -32,12 +36,16 @@ export default class App extends React.Component {
 
 const AppStackNavigator = createStackNavigator(
 	{
-		Join: Join,
-		Signup: Signup,
 		Login: Login,
+		Signup: Signup,
 		MainMenu: MainMenu,
 		NewBoard: NewBoardPage,
-		Preview: Preview
+		Preview: Preview,
+		Search: SearchBoards,
+		Pregame: Pregame,
+		Game: Game,
+		Join: Join,
+		Options: Options
 	},
 	{
 		headerMode: 'none',
@@ -46,13 +54,3 @@ const AppStackNavigator = createStackNavigator(
 		}
 	}
 );
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: '#fff',
-		alignItems: 'center',
-		justifyContent: 'center',
-		paddingTop: 5
-	}
-});

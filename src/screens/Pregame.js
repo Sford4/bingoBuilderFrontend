@@ -8,9 +8,12 @@ import masterStyles from '../styles/masterStyles';
 import Header from '../screens/components/header';
 import BingoBoard from '../screens/components/bingoBoard';
 
-class Preview extends React.Component {
+class Pregame extends React.Component {
+	constructor(props) {
+		super(props);
+	}
 	squarePressed = () => {
-		console.log("They think they're playing but it's just preview...");
+		console.log("They think they're playing but it's just pregame...");
 	};
 
 	componentWillUpdate(NextProps, NextState) {
@@ -22,27 +25,19 @@ class Preview extends React.Component {
 	render() {
 		return (
 			<View style={styles.container}>
-				<Header title={this.props.board.title || 'NO TITLE'} />
+				<Header title="Preview" />
 				<View>
+					<Text style={styles.title}>Board title: {this.props.board.title}</Text>
 					<BingoBoard board={this.props.board} squarePressed={this.squarePressed} />
 				</View>
 				<TouchableHighlight
 					style={masterStyles.button}
-					onPress={() => this.props.navigation.navigate('NewBoard')}
+					onPress={() => this.props.startGame(this.props.board._id, this.props.user._id)}
 				>
-					<Text style={masterStyles.btnText}>Needs work...</Text>
+					<Text style={masterStyles.btnText}>Start Game</Text>
 				</TouchableHighlight>
-				<TouchableHighlight
-					style={masterStyles.button}
-					onPress={() => this.props.saveAndPlayLater(this.props.board, this.props.user._id)}
-				>
-					<Text style={masterStyles.btnText}>Save and play later</Text>
-				</TouchableHighlight>
-				<TouchableHighlight
-					style={masterStyles.button}
-					onPress={() => this.props.saveAndStartGame(this.props.board._id, this.props.user._id)}
-				>
-					<Text style={masterStyles.btnText}>Save and play NOW</Text>
+				<TouchableHighlight style={masterStyles.button} onPress={() => Navigation.navigate('Search')}>
+					<Text style={masterStyles.btnText}>Back</Text>
 				</TouchableHighlight>
 
 			</View>
@@ -68,5 +63,10 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-around',
 		alignSelf: 'flex-start'
+	},
+	title: {
+		fontSize: 24,
+		color: '#4D4D4D',
+		fontFamily: 'Futura-Medium'
 	}
 });
